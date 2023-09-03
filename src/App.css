@@ -13,3 +13,17 @@
   margin-top: 0;
   margin-bottom: 1.5rem;
 }
+
+.list-ordered {
+  --list--padding-left: 2em;
+  padding-left: var(--list--padding-left);
+}
+
+.list-ordered > li > ul {
+  margin-left: calc(var(--list--padding-left) * -1);
+}
+
+.list-unstyled {
+  list-style: none;
+  padding-left: 0;
+}

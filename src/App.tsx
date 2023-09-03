@@ -1,5 +1,8 @@
+import { useCallback, useState } from "react";
 import "./App.css";
+import Task from "./components/Task";
 import { stages, tasks } from "./data";
+import Stage from "./components/Stage";
 
 const tasksIndexedByStage = tasks.reduce<{ [stage: Task["stage"]]: Task[] }>(
   (acc, task) => ({
@@ -10,21 +13,39 @@ const tasksIndexedByStage = tasks.reduce<{ [stage: Task["stage"]]: Task[] }>(
 );
 
 function App() {
+  const [completedIds, setCompletedIds] = useState<Task["id"][]>([]);
+
+  const handleTaskToggle = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    ({ currentTarget }) =>
+      setCompletedIds((prevState) =>
+        currentTarget.checked
+          ? [...prevState, currentTarget.value]
+          : prevState.filter((id) => id !== currentTarget.value)
+      ),
+    []
+  );
+
   return (
     <div className="card">
       <h1 className="card__title">My startup progress</h1>
-      <ul>
+      <ol className="list-ordered">
         {stages.map((stage) => (
-          <li key={stage.id}>
-            <h3>{stage.name}</h3>
-            <ul>
-              {tasksIndexedByStage[stage.id].map((task) => (
-                <li key={task.id}>{task.name}</li>
-              ))}
-            </ul>
-          </li>
+          <Stage key={stage.id} label={stage.name} isCompleted={false}>
+            {tasksIndexedByStage[stage.id].map((task) => (
+              <Task
+                key={task.id}
+                id={task.id}
+                isCompleted={completedIds.includes(task.id)}
+                onChange={handleTaskToggle}
+              >
+                {task.name}
+              </Task>
+            ))}
+          </Stage>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 }
