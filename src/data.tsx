@@ -1,6 +1,3 @@
-import { Stage, Task } from "./types";
-
-
 const stages: Stage[] = [
   {
     id: "stage-1",
