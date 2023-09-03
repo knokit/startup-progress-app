@@ -15,7 +15,8 @@
 }
 
 .stage__title {
-  display: inline-block;
+  display: inline-flex;
+  column-gap: 1em;
 }
 
 /* Lists */
@@ -46,4 +47,16 @@
 .list-unstyled {
   list-style: none;
   padding-left: 0;
+}
+
+/* checkmark */
+
+.checkmark {
+  --width: 1.5em;
+
+  width: var(--width);
+  height: calc(var(--width) / 2);
+  border-left: 0.5em solid var(--global--color);
+  border-bottom: 0.5em solid var(--global--color);
+  transform: rotate(-45deg);
 }

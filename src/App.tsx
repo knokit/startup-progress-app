@@ -13,6 +13,11 @@ const tasksIndexedByStage = tasks.reduce<{ [stage: Task["stage"]]: Task[] }>(
   {}
 );
 
+function isStageCompleted(stage: Stage, completedIds: Task['id'][]) {
+  const stageTasks = tasksIndexedByStage[stage.id];
+  return stageTasks.every((task) => completedIds.includes(task.id));
+}
+
 function App() {
   const [completedIds, setCompletedIds] = useLocalStorage<Task["id"][]>("completed-tasks", []);
 
@@ -36,7 +41,7 @@ function App() {
           <Stage
             key={stage.id}
             label={stage.name}
-            isCompleted={false}
+            isCompleted={isStageCompleted(stage, completedIds)}
             className="list-ordered-circle__item"
           >
             {tasksIndexedByStage[stage.id].map((task) => (
