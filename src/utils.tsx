@@ -1,10 +1,21 @@
+import { tasks } from "./data";
 
-function indexBy<TData>(data: TData[], key: keyof TData) {
-  return data.reduce(
-    (acc, item) => ({
-      ...acc,
-      [item[key]]: acc[item[key]] ? [...acc[item[key]], item] : [item],
-    }),
-    {}
-  );
-}
+const tasksIndexedByStage = tasks.reduce<{ [stage: Task["stage"]]: Task[] }>(
+  (acc, task) => ({
+    ...acc,
+    [task.stage]: acc[task.stage] ? [...acc[task.stage], task] : [task],
+  }),
+  {}
+);
+
+const isStageCompleted = (stage: Stage, completedIds: Task["id"][]) =>
+  getStageTasks(stage).every((task) => completedIds.includes(task.id));
+
+const getStageTasks = (stage: Stage) => tasksIndexedByStage[stage.id];
+
+const isAllTasksCompleted = (completedIds: Task["id"][]) =>
+  Object.values(tasks)
+    .flat()
+    .every((task) => completedIds.includes(task.id));
+
+export { isStageCompleted, getStageTasks, isAllTasksCompleted };
