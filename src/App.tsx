@@ -1,8 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import "./App.css";
 import Task from "./components/Task";
 import { stages, tasks } from "./data";
 import Stage from "./components/Stage";
+import { useLocalStorage } from "./hooks";
 
 const tasksIndexedByStage = tasks.reduce<{ [stage: Task["stage"]]: Task[] }>(
   (acc, task) => ({
@@ -13,7 +14,7 @@ const tasksIndexedByStage = tasks.reduce<{ [stage: Task["stage"]]: Task[] }>(
 );
 
 function App() {
-  const [completedIds, setCompletedIds] = useState<Task["id"][]>([]);
+  const [completedIds, setCompletedIds] = useLocalStorage<Task["id"][]>("completed-tasks", []);
 
   const handleTaskToggle = useCallback<
     React.ChangeEventHandler<HTMLInputElement>
@@ -24,7 +25,7 @@ function App() {
           ? [...prevState, currentTarget.value]
           : prevState.filter((id) => id !== currentTarget.value)
       ),
-    []
+    [setCompletedIds]
   );
 
   return (
