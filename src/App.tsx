@@ -30,9 +30,14 @@ function App() {
   return (
     <div className="card">
       <h1 className="card__title">My startup progress</h1>
-      <ol className="list-ordered">
+      <ol className="list-ordered-circle">
         {stages.map((stage) => (
-          <Stage key={stage.id} label={stage.name} isCompleted={false}>
+          <Stage
+            key={stage.id}
+            label={stage.name}
+            isCompleted={false}
+            className="list-ordered-circle__item"
+          >
             {tasksIndexedByStage[stage.id].map((task) => (
               <Task
                 key={task.id}

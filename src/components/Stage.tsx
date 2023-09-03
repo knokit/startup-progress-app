@@ -2,12 +2,13 @@ interface StageProps {
   label: Stage["name"];
   isCompleted: boolean;
   children: React.ReactNode;
+  className?: string;
 }
 
-function Stage({ label, isCompleted, children: tasks }: StageProps) {
+function Stage({ label, isCompleted, className, children: tasks }: StageProps) {
   return (
-    <li>
-      <h3>
+    <li className={className}>
+      <h3 className="stage__title">
         {label} {isCompleted ? <>&#x2714;</> : null}
       </h3>
       <ul className="list-unstyled">{tasks}</ul>
